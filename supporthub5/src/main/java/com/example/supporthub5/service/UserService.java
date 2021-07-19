@@ -1,5 +1,6 @@
 package com.example.supporthub5.service;
 
+import com.example.exception.ResourceNotFoundException;
 import com.example.supporthub5.model.User;
 import com.example.supporthub5.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +17,7 @@ public class UserService {
 
 
     public List<User> getAllUsers() {
-        List<User> users=new ArrayList<>();
-        userRepository.findAll().forEach(users::add);
-        return users;
-
-
+        return userRepository.findAll();
     }
 
 
@@ -29,8 +26,22 @@ public class UserService {
     }
 
 
-    public void updateUser(Long id, User user) {
-        userRepository.save(user);
+    public User updateUser(Long id,User user) {
+
+        User updateUser=userRepository.findById(id).orElseThrow(
+                ()  -> new ResourceNotFoundException("id",id));
+
+        updateUser.setFirstName(user.getFirstName());
+        updateUser.setLastName(user.getFirstName());
+        updateUser.setPassword(user.getPassword());
+        updateUser.setEmailId(user.getEmailId());
+        updateUser.setPhoneNo(user.getPhoneNo());
+
+        userRepository.save(updateUser);
+        return updateUser;
+
+
+
     }
 
 

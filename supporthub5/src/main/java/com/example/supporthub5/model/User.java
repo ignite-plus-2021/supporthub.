@@ -1,22 +1,21 @@
 package com.example.supporthub5.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+
 
 import javax.persistence.*;
 
-@Setter
-@Getter
+@Data
 @Entity
 @Table(name="Employees")
 public class User {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name="Id")
-    private Integer Id;
+    private Long Id;
 
 
-    @Column(name="first_name")
+    @Column(name="first_name" , nullable=false)
     private String firstName;
 
     @Column(name="last_name")
@@ -25,7 +24,7 @@ public class User {
     @Column(name="password")
     private String password;
 
-    @Column(name="email_id")
+    @Column(name="email_id"  ,nullable=true )
     private String emailId;
 
     @Column(name="phone_no")

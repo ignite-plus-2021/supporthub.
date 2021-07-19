@@ -33,7 +33,7 @@ public class UserController {
 
 
 
-    @RequestMapping(method=RequestMethod.POST , value="/users")
+    @RequestMapping(method=RequestMethod.POST , value="/register")
     public void UserRegistration(@RequestBody User user)
     {
         userService.UserRegistration(user);
