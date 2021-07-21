@@ -24,7 +24,7 @@ public class User {
     @Column(name="password")
     private String password;
 
-    @Column(name="email_id"  ,nullable=true )
+    @Column(name="email_id"  ,nullable=false )
     private String emailId;
 
     @Column(name="phone_no")
