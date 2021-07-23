@@ -1,12 +1,13 @@
 package com.example.supporthub5.model;
 
 import lombok.Data;
-
+import lombok.Getter;
 
 import javax.persistence.*;
 
 @Data
 @Entity
+@Getter
 @Table(name="Employees")
 public class User {
     @Id
