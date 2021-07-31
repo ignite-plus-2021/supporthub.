@@ -23,8 +23,6 @@ public class UserController {
     }
 
 
-
-
     @RequestMapping(value="/users" , method=RequestMethod.GET)
     public List<User> getAllSubjects()
     {
@@ -32,11 +30,11 @@ public class UserController {
     }
 
 
-
+    @CrossOrigin(origins = "http://localhost:3000")
     @RequestMapping(method=RequestMethod.POST , value="/register")
-    public void UserRegistration(@RequestBody User user)
+    public String UserRegistration(@RequestBody User user)
     {
-        userService.UserRegistration(user);
+        return userService.UserRegistration(user);
     }
 
 
