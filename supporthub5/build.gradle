@@ -2,7 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.5.2'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
-    id "org.flywaydb.flyway" version "7.7.3"
+   id "org.flywaydb.flyway" version "7.7.3"
 }
 
 group = 'com.example'
@@ -22,24 +22,23 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	//implementation 'org.flywaydb:flyway-core'
+	implementation 'org.flywaydb:flyway-core'
 	compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	//runtimeOnly 'mysql:mysql-connector-java'
-	implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.18'
+//	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	runtimeOnly 'mysql:mysql-connector-java'
+	//implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.18'
 	annotationProcessor 'org.projectlombok:lombok'
+//	implementation 'org.springframework.boot:spring-boot-starter-security'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	compileOnly 'org.springframework:spring-context-support'
+	implementation 'javax.mail:javax.mail-api:1.6.2'
+	implementation 'org.springframework.security:spring-security-crypto:5.3.5.RELEASE'
+
+
 }
 
 test {
 	useJUnitPlatform()
 }
-
-// flyway{
-//     driver="com.mysql.cj.jdbc.Driver"
-//     url ="jdbc:mysql://localhost:3307/user?useSSL=false"
-//     user = "root"
-//     password = "admin"
-
-
-// }
