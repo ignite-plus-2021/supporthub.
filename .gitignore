@@ -1,0 +1,5 @@
+# Project exclude paths
+/supporthub.-main/supporthub5/.gradle/
+/supporthub.-main/supporthub5/build/
+/supporthub.-main/supporthub5/build/classes/java/main/
+/supporthub.-main/supporthub5/build/classes/java/test/
