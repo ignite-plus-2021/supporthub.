@@ -2,6 +2,7 @@ CREATE TABLE requests(
 request_id bigint NOT NULL AUTO_INCREMENT,
 description varchar(255)  NOT NULL,
 state varchar(255) NOT NULL,
+created_on DATE NOT NULL ,
 location_id bigint,
 service_id bigint,
 user_id bigint,

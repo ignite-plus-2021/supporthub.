@@ -1,7 +1,6 @@
 package com.example.supporthub5.model;
 
 
-
 import lombok.Data;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -9,10 +8,9 @@ import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
 
-
 @Data
 @Entity
-@Table(name="Employees")
+@Table(name="user")
 public class User  implements Serializable {
 
     @Id
@@ -50,10 +48,6 @@ public class User  implements Serializable {
     @NotEmpty(message = "role  can not be empty")
     @Column(name="role")
     private String role;
-
-
-    @Column(name="status" ,  columnDefinition = "integer default 0")
-    private  Boolean loggedIn=Boolean.FALSE;
 
 
 

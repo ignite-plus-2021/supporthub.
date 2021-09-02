@@ -5,7 +5,10 @@ import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
+
+
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name="Requests")
@@ -48,16 +51,14 @@ public class Request{
     @JoinColumn(name = "service_id")
     private ServiceDetails service;
 
-//
-//    @Column(name = "photo", length = 1000)
-//    private byte[] photo;
-//
-//    @Column(name = "document", length = 1000)
-//    private byte[] document;
+    @Temporal(TemporalType.DATE)
+    @Column(name="created_on")
+    private Date CreatedOn=new Date(System.currentTimeMillis());
 
 
-
-
+    @Lob
+    @Column(name = "photo", columnDefinition="BLOB")
+    private byte[] photo;
 
 private void setLocation(long  locationId)
 {

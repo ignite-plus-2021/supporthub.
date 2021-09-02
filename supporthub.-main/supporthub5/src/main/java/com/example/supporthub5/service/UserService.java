@@ -33,17 +33,16 @@ public class UserService {
     }
 
 
-    public User updateUser(Long id,User user) {
-          User updateUser=userRepository.findById(id).orElseThrow();
-        updateUser.setFirstName(user.getFirstName());
-        updateUser.setLastName(user.getLastName());
-        updateUser.setUserName(user.getUserName());
-        updateUser.setPassword(user.getPassword());
-        updateUser.setEmailId(user.getEmailId());
-        updateUser.setPhoneNo(user.getPhoneNo());
-        updateUser.setLoggedIn(user.getLoggedIn());
-        userRepository.save(updateUser);
-        return updateUser;
+    public User updateUser(Long id,User updatedUserData) {
+        User user=userRepository.findById(id).orElseThrow();
+        user.setFirstName(updatedUserData.getFirstName());
+        user.setLastName(updatedUserData.getLastName());
+        user.setUserName(updatedUserData.getUserName());
+        user.setPassword(updatedUserData.getPassword());
+        user.setEmailId(updatedUserData.getEmailId());
+        user.setPhoneNo(updatedUserData.getPhoneNo());
+        userRepository.save(user);
+        return user;
       }
 
 
@@ -51,8 +50,8 @@ public class UserService {
     public User login(LoginUser user) {
           String username=user.getUserName();
           String password=user.getPassword();
-          User u=userRepository.findByUserNameAndPassword(username,password);
-          u.setLoggedIn(Boolean.TRUE); ///needs to change this
+          User u=userRepository.findByUserNameAndPassword(username,password).get();
+//          u.setLoggedIn(Boolean.TRUE); ///needs to change this
           userRepository.save(u);
           return u;
     }
@@ -63,15 +62,8 @@ public class UserService {
         return "users deleted successfully";
     }
 
-    //Need to change this
-    public User logOut(LoginUser user) {
-        String username=user.getUserName();
-        String password=user.getPassword();
-        User u=userRepository.findByUserNameAndPassword(username,password);
-        u.setLoggedIn(Boolean.FALSE);
-        userRepository.save(u);
-        return u;
-    }
+
+
 
 
     public String resetPassword(ObjectNode objectNode) {
@@ -80,9 +72,9 @@ public class UserService {
         String confirmPassword=objectNode.get("confirmPassword").asText();
 
         if(password.equals(confirmPassword) &&
-                userRepository.findByEmailId(emailId)!=null)
+                userRepository.findByEmailId(emailId).isPresent())
         {
-            User u=userRepository.findByEmailId(emailId);
+            User u=userRepository.findByEmailId(emailId).get();
             System.out.println(u);
             u.setPassword(confirmPassword);
             userRepository.save(u);

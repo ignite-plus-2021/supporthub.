@@ -12,8 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.*;
 
 
 @Service
@@ -71,14 +73,48 @@ public class RequestService {
     public ResponseEntity<List<Request>> getMyRequests(ObjectNode objectNode) {
         String username=objectNode.get("userName").asText();
         List<Request> requests = new ArrayList<Request>();
-        if (userRepository.findByUserName(username) != null) {
-            User user = userRepository.findByUserName(username);
+        if (userRepository.findByUserName(username).isPresent()) {
+            User user = userRepository.findByUserName(username).get();
             System.out.println(user);
             long userId = user.getId();
-           requests = requestRepository.findByUser(user);
+           requests = requestRepository.findByUser(user).get();
         }
             return new ResponseEntity<>(requests, HttpStatus.OK);
 
     }
+
+    public ResponseEntity<String> closeRequests(Long[] requestId)
+    {
+        for(long id:requestId)
+        {
+            Request request=requestRepository.findByRequestId(id).get();
+            if(request.getState().equals("Active"))
+            {
+                request.setState("Completed");
+            }
+             requestRepository.save(request);
+        }
+        return new ResponseEntity<>("Requests closed successfully",HttpStatus.OK);
+    }
+
+
+
+
+
+    public ResponseEntity<List<Request>> filters(Long requestId,Long locationId,Long serviceId,String description,String state,String createdOn)throws Exception {
+
+        System.out.println(requestId);
+        System.out.println(description);
+        System.out.println(state);
+        System.out.println(locationId);
+        System.out.println(serviceId);
+        System.out.println(createdOn);
+
+      List<Request> list=requestRepository.applyFilters(requestId,locationId,serviceId,description,state,createdOn).get();
+       return new ResponseEntity<>(list,HttpStatus.OK);
+    }
+
+
+
 
 }

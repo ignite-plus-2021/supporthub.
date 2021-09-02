@@ -20,15 +20,13 @@ public class UserController {
     @Autowired
     UserService userService;
 
-
-
     @RequestMapping(method = RequestMethod.POST, value = "/register")
     public String UserRegistration(@RequestBody User user) {
         return userService.UserRegistration(user);
     }
 
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping( method = RequestMethod.GET)
     public ResponseEntity<List<User>> getAllUsers() {
         return userService.getAllUsers();
     }
@@ -47,17 +45,10 @@ public class UserController {
 
 
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "delete")
+    @RequestMapping(method = RequestMethod.DELETE)
     public String deleteUsers() {
         return userService.deleteUsers();
       }
-
-
-    //needs to change this
-    @PutMapping("/logout")
-    public User logOut(@Valid @RequestBody LoginUser user) {
-        return userService.logOut(user);
-    }
 
 
     @PutMapping("/resetpassword")
@@ -69,7 +60,6 @@ public class UserController {
 
     @PostMapping("/forgotpassword")
     public String forgotPassword(@RequestBody ObjectNode objectNode ){
-
         return  userService.forgotPassword(objectNode);
     }
 
