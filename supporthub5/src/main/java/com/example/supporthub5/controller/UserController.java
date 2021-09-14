@@ -17,30 +17,25 @@ public class UserController {
     UserService userService;
 
     @GetMapping("/")
-    @ResponseBody
     public String  home() {
         return "WELCOME TO SUPPORT HUB";
     }
 
-
-
-
+    
     @RequestMapping(value="/users" , method=RequestMethod.GET)
     public List<User> getAllSubjects()
     {
         return userService.getAllUsers();
     }
 
-
-
+     
     @RequestMapping(method=RequestMethod.POST , value="/register")
     public void UserRegistration(@RequestBody User user)
     {
         userService.UserRegistration(user);
     }
-
-
-
+    
+    
     @RequestMapping(method= RequestMethod.PUT , value="/users/{id}")
     public void updateUser(@PathVariable Long id,@RequestBody User user)
     {
