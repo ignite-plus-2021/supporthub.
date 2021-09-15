@@ -21,7 +21,7 @@ public class UserService {
 
 
     public String UserRegistration(User user) {
-        //user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return "User Registered Successfully";
     }
@@ -46,15 +46,6 @@ public class UserService {
       }
 
 
-
-    public User login(LoginUser user) {
-          String username=user.getUserName();
-          String password=user.getPassword();
-          User u=userRepository.findByUserNameAndPassword(username,password).get();
-//          u.setLoggedIn(Boolean.TRUE); ///needs to change this
-          userRepository.save(u);
-          return u;
-    }
 
 
     public String deleteUsers() {
