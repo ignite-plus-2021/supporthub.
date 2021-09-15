@@ -41,13 +41,6 @@ public class Request{
     private ServiceDetails service;
 
 
-//    @Column(name = "photo", length = 1000)
-//    private byte[] photo;
-//
-//    @Column(name = "document", length = 1000)
-//    private byte[] document;
-
-
 }
 
 
