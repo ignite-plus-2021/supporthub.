@@ -52,7 +52,7 @@ public class UserController {
 
 
 
-    @PostMapping("/forgotpassword")
+    @RequestMapping(method=Request.POST,value="/forgotpassword")
     public String forgotPassword(@RequestBody ObjectNode objectNode ){
         return  userService.forgotPassword(objectNode);
     }
@@ -68,5 +68,7 @@ public class UserController {
 }
 
 
+ @RequestMapping("/filters",method=RequestMethod.GET)
+    public ResponseEntity<List<Request>> filters(@RequestParam Long requestId, @RequestParam  Long locationId,@RequestParam Long serviceId,@RequestParam  String description,@RequestParam  String state,@RequestParam  String createdOn)throws Exception
 
 
