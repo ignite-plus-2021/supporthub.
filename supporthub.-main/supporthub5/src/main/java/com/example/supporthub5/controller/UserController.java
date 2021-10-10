@@ -45,21 +45,21 @@ public class UserController {
       }
 
 
-    @PutMapping("/resetpassword")
-    public String resetPassword(@Valid @RequestBody ObjectNode objectNode) {
-        return userService.resetPassword(objectNode);
+    @RequestMapping(method=RequestMethod.PUT,value="/resetpassword")
+    public String resetPassword(@RequestParam String emailId,@RequestParam String password,@RequestParam String confirmPassword) {
+        return userService.resetPassword(emailId,password,confirmPassword);
     }
 
 
 
     @RequestMapping(method=Request.POST,value="/forgotpassword")
-    public String forgotPassword(@RequestBody ObjectNode objectNode ){
-        return  userService.forgotPassword(objectNode);
+    public String forgotPassword(@RequestParam String emailId ){
+        return  userService.forgotPassword(emailId);
     }
 
     
     
-    @RequestMapping(method = RequestMethod.PUT, value = "/login")
+    @RequestMapping(method = RequestMethod.POST, value = "/login")
     public User login(@Valid @RequestBody LoginUser user) {
         return userService.login(user);
     }
@@ -67,8 +67,5 @@ public class UserController {
 
 }
 
-
- @RequestMapping("/filters",method=RequestMethod.GET)
-    public ResponseEntity<List<Request>> filters(@RequestParam Long requestId, @RequestParam  Long locationId,@RequestParam Long serviceId,@RequestParam  String description,@RequestParam  String state,@RequestParam  String createdOn)throws Exception
 
 
