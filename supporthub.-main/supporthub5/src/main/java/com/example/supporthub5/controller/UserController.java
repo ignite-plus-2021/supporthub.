@@ -38,12 +38,6 @@ public class UserController {
     }
 
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/login")
-    public User login(@Valid @RequestBody LoginUser user) {
-        return userService.login(user);
-    }
-
-
 
     @RequestMapping(method = RequestMethod.DELETE)
     public String deleteUsers() {
@@ -63,6 +57,12 @@ public class UserController {
         return  userService.forgotPassword(objectNode);
     }
 
+    
+    
+    @RequestMapping(method = RequestMethod.PUT, value = "/login")
+    public User login(@Valid @RequestBody LoginUser user) {
+        return userService.login(user);
+    }
 
 
 }
