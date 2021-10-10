@@ -65,7 +65,7 @@ public class RequestService {
 
 
     public String deleteAllRequests() {
-        requestRepository.deleteAll();
+       requestRepository.deleteAll();
         return "requests deleted successfully";
     }
 
