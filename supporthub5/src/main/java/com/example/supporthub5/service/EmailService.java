@@ -16,8 +16,6 @@ import java.util.Random;
 @Service
 public class EmailService {
 
-
-
     @Autowired
     private JavaMailSender javaMailSender;
 
@@ -25,9 +23,8 @@ public class EmailService {
 
         String from = "vaspularuchi@gmail.com";
         SimpleMailMessage message = new SimpleMailMessage();
-
-
-            message.setFrom(from);
+          
+           message.setFrom(from);
             message.setTo(emailId);
             message.setSubject("OTP from SupportHub");
 
@@ -35,12 +32,9 @@ public class EmailService {
             int otp = 100000+random.nextInt(900000);
 
             message.setText("YOUR  ONE-TIME PASSWORD: " + otp);
-                javaMailSender.send(message);
+            javaMailSender.send(message);
 
-        return ResponseEntity.ok("Email sent sucessfully");
-
-
-
+          return ResponseEntity.ok("Email sent sucessfully");
 
     }
 
