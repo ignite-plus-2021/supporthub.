@@ -25,7 +25,7 @@ public class RequestController {
     @Autowired
     RequestService requestService;
 
-    @RequestMapping(method = RequestMethod.POST, value = "/newrequest")
+    @RequestMapping(value = "/newrequest",method = RequestMethod.POST)
     public String openRequest(@RequestBody Request request) {
         return requestService.newRequest(request);
     }
@@ -43,7 +43,7 @@ public class RequestController {
     }
 
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "delete")
+    @RequestMapping( value = "/delete",method = RequestMethod.DELETE)
     public String deleteRequests() {
         return requestService.deleteAllRequests();
     }
@@ -56,14 +56,8 @@ public class RequestController {
         return requestService.closeRequests(requestId);
     }
 
-//    @PostMapping("/upload")
-//    public  ResponseEntity<String> upload(@RequestParam("file") MultipartFile file) throws IOException {
-//                          return     requestService.upload(file); }
 
-
-
-
-    @GetMapping("/filters")
+    @RequestMapping("/filters",method=RequestMethod.GET)
     public ResponseEntity<List<Request>> filters(@RequestParam Long requestId, @RequestParam  Long locationId,@RequestParam Long serviceId,@RequestParam  String description,@RequestParam  String state,@RequestParam  String createdOn)throws Exception
 
     {
