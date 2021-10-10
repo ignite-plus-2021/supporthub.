@@ -18,6 +18,9 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+    
+    @Autowired
+    private EmailService emailService;
 
 
     public String UserRegistration(User user) {
@@ -55,13 +58,8 @@ public class UserService {
 
 
 
-
-
-    public String resetPassword(ObjectNode objectNode) {
-        String emailId=objectNode.get("emailId").asText();
-        String password=objectNode.get("password").asText();
-        String confirmPassword=objectNode.get("confirmPassword").asText();
-
+    public String resetPassword(String emailId,String password,String confirmPassword) {
+     
         if(password.equals(confirmPassword) &&
                 userRepository.findByEmailId(emailId).isPresent())
         {
@@ -71,18 +69,18 @@ public class UserService {
             userRepository.save(u);
             return "Password set succesfully";
         }
-        return "Something went wrong";
+        return "Something went wrong!!Please try again";
     }
 
 
 
-    public String forgotPassword(ObjectNode objectNode) {
-        String emailId = objectNode.get("emailId").asText();
-         System.out.println(emailId);
-         if(userRepository.findByEmailId(emailId)!=null)
-            return "User with email exists";
-        else
-            return "User not found";
+    public String forgotPassword(String emailId) {
+       
+         if(userRepository.findByEmailId(emailId)!=null){
+              return emailService.sendEmail(emailId);
+             }
+          else
+            return "Please provide a valid emailId";
     }
 
 
