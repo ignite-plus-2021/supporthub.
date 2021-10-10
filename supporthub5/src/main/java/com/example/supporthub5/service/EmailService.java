@@ -21,15 +21,15 @@ public class EmailService {
     @Autowired
     private JavaMailSender javaMailSender;
 
-       public ResponseEntity<?>  sendEmail(EmailRequest request) {
+       public ResponseEntity<?>  sendEmail(String emailId) {
 
         String from = "vaspularuchi@gmail.com";
         SimpleMailMessage message = new SimpleMailMessage();
 
 
             message.setFrom(from);
-            message.setTo(request.getFrom());
-            message.setSubject(request.getSubject());
+            message.setTo(emailId);
+            message.setSubject("OTP from SupportHub");
 
             Random random = new Random(1000);
             int otp = 100000+random.nextInt(900000);
