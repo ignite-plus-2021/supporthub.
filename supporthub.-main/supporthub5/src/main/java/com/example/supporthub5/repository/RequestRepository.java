@@ -29,8 +29,7 @@ public interface RequestRepository  extends JpaRepository<Request,Long> {
                                                                   (description=?4 or ?4 is null )  AND  
                                                                   (state=?5 or ?5 is null)         AND
                                                                  (created_on=?6 or ?6 is null) ")
-    Optional<List<Request>> applyFilters ( Long requestId, Long
-                                           locationId, Long ServiceId, String description, String state,String createdOn);
+    Optional<List<Request>> applyFilters ( Long requestId, Long  locationId, Long ServiceId, String description, String state,String createdOn);
 
 
 }
