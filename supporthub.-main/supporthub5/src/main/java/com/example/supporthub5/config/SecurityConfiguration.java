@@ -22,47 +22,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    @Autowired
-    private UserDetailsService userDetailsService;
-
-
-
-    @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider daoAuthenticationProvider=new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setUserDetailsService(userDetailsService);
-        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
-
-        return daoAuthenticationProvider;
-
-
-    }
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth)throws Exception{
-        auth.authenticationProvider(authenticationProvider());
-    }
-
-    protected void configure(HttpSecurity http)throws Exception{
-//        http
-//                .authorizeRequests()
-//                .antMatchers("/**").permitAll()     .and()
-//                .formLogin().loginPage("/users/login").permitAll()
-//               .and()
-//              .csrf().disable();
-
-
-        http
-                .authorizeRequests()
-                .antMatchers("/**").permitAll()
-                .and()
-                .formLogin().and().csrf().disable();
-
-//        http.httpBasic().disable();
-
- }
-
-
-
 
 }
