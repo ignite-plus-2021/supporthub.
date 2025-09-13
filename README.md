@@ -185,6 +185,14 @@ View → The UI (what the user sees: HTML, JSON, etc.).
 Controller → The logic that connects the two (handles requests, prepares responses).
 
 
+_______________
 
+DAO = Repository interface ✅
 
+No extra DAO class is required unless you want custom complex queries using Hibernate Session or JDBC.
+
+DAO = Data Access Object
+
+It’s a layer that handles all database operations (CRUD) for an entity.
+Keeps persistence logic separate from business logic.
 
