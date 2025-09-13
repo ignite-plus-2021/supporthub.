@@ -1,41 +1,29 @@
-# supporthub.
-with lombok and flyway
+supporthub
 
+With Lombok and Flyway
 
-Spring boot Tutorial:
+Spring Boot Tutorial
 
-Spring Boot makes it easy to create stand-alone, production-grade Spring based Applications that you can "just run".
+Spring Boot makes it easy to create stand-alone, production-grade Spring-based applications that you can "just run".
 
-Add dependecies in pom.xml file
-configure application.yml to set the app configs
+Add dependencies in pom.xml and configure application.yml to set the app configs.
 
-create Entities
-
-
-______________
+Create Entities:
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
     // Spring Data JPA generates basic CRUD automatically
 }
 
-
-
-For ProductRepository, these become:
-
+Basic CRUD with ProductRepository
 productRepository.save(product);
 productRepository.findById(1L);
 productRepository.findAll();
 productRepository.deleteById(2L);
 productRepository.count();
 
-_______________
-
-
 Custom Query Methods
 
-
-
-Spring Data can generate queries from method names. Example:
+Spring Data can generate queries from method names.
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findByName(String name);
@@ -44,21 +32,17 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 }
 
 
-These translate to SQL like:
+Translates to SQL:
 
 SELECT * FROM product WHERE name = ?;
 SELECT * FROM product WHERE price < ?;
 SELECT * FROM product WHERE category = ? AND price < ?;
 
+Custom Queries (JPQL)
 
+If the method name is too complex, use @Query.
 
-Custom Queries (JPQL) - Java Persistence Query Language
-If the method name is too complex, use @Query:
-
-
-@Param
-Used in @Query to bind method parameters to query parameters.
-
+@Param is used in @Query to bind method parameters to query parameters.
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
@@ -70,28 +54,23 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 }
 
 
-It’s the query language used in JPA (Java Persistence API) to query entities (your mapped classes) 
-instead of directly querying database tables.
+SQL works on tables & columns.
 
-SQL → works on tables & columns.
-JPQL → works on entities & their fields.
+JPQL works on entities & their fields.
 
-So, JPQL is object-oriented and database-agnostic, while SQL is tied to the database schema.
-
+JPQL is object-oriented and database-agnostic, SQL is tied to the schema.
 
 Transactions
 
 All repository methods are already wrapped with @Transactional by Spring Data:
 
--> Write methods (save, delete) → transactional with commit.
--> Read methods (findBy...) → transactional with read-only.
+Write methods (save, delete) → transactional with commit.
 
-So you don’t need to manually add @Transactional most of the time.
-_______________
+Read methods (findBy...) → transactional with read-only.
 
+Most of the time, you don’t need to manually add @Transactional.
 
-
-Annotations:
+Common Annotations
 
 @SpringBootApplication → main entry point, enables auto-configuration.
 
@@ -107,26 +86,9 @@ Annotations:
 
 @RestController → REST APIs.
 
+@Data → generates getters, setters, toString(), equals(), hashCode().
 
-@Data
-
-Automatically generates:
-
-Getters for all fields
-Setters for all fields
-toString() method
-equals() and hashCode()
-
-Required constructor (no-args by default)
-
-
-
-@Builder
-
-Allows you to create objects in a readable way without using long constructors.
-
-Implements the builder pattern automatically.
-
+@Builder → enables builder pattern.
 
 @Builder
 @Data
@@ -137,7 +99,7 @@ public class Product {
 }
 
 
-Now you can create a Product like this:
+Usage:
 
 Product p = Product.builder()
                    .id(1L)
@@ -145,21 +107,15 @@ Product p = Product.builder()
                    .price(899.0)
                    .build();
 
-
-
-
-_____
-
 @Autowired
-It’s Spring’s way of doing Dependency Injection (DI).
-Instead of you manually creating objects with new.
-Spring automatically injects the required bean (class instance) wherever you need it
 
-if we define at field level it needs to ve everywhere.
+Spring’s way of doing Dependency Injection (DI).
 
+Injects required bean wherever you need it.
 
 @Service
 public class OrderService {
+
     private final ProductRepository productRepository;
     private final PaymentService paymentService;
     private final NotificationService notificationService;
@@ -174,91 +130,47 @@ public class OrderService {
     }
 }
 
-
-_____
-
-Spring automatically injects the required bean (class instance) wherever you need it
+Request Mappings
 
 @RequestMapping, @GetMapping, @PostMapping → endpoint mappings.
 
-@Transactional → transaction boundaries for DB operations.
-It tells Spring that a method (or class) should run inside a database transaction.
+@Transactional
 
-A transaction means: either all database operations succeed , or all are rolled back  (to keep data consistent).
+Defines transaction boundaries for DB operations.
 
-On a method → only that method runs in a transaction.
-On a class → all public methods in that class are transactional.
-
-Usually at the Service Layer, not at the Repository level.
-
-Repository already handles single operations.
-Service often involves multiple steps → so you want all-or-nothing behavior.
-
-
-@Transactional = all-or-nothing guarantee for DB operations.
-
-Rollback on failure, commit on success.
-Place it at service layer methods that do multiple DB updates.
-
-
+Ensures all-or-nothing behavior.
 
 @Transactional
 public void transferMoney(Long fromAccount, Long toAccount, double amount) {
-    accountRepository.debit(fromAccount, amount);  // Step 1
+    accountRepository.debit(fromAccount, amount); // Step 1
     accountRepository.credit(toAccount, amount);  // Step 2
     // If Step 2 fails, Step 1 is rolled back automatically
 }
 
+MVC (Model–View–Controller)
 
-__________________
+Model → data (entities, business objects, database layer)
 
+View → UI (HTML, JSON, etc.)
 
-MVC
+Controller → logic that connects model and view
 
-Model–View–Controller (MVC) — it’s the core design pattern behind Spring Boot web apps (and many frameworks).
+DAO
 
-It’s a way to separate responsibilities in your application:
+Repository interface handles CRUD.
 
-Model → The data (your business objects, entities, database layer).
+DAO = Data Access Object, separates persistence logic from business logic.
 
-View → The UI (what the user sees: HTML, JSON, etc.).
-
-Controller → The logic that connects the two (handles requests, prepares responses).
-
-
-_______________
-
-DAO = Repository interface ✅
-
-No extra DAO class is required unless you want custom complex queries using Hibernate Session or JDBC.
-
-DAO = Data Access Object
-
-It’s a layer that handles all database operations (CRUD) for an entity.
-Keeps persistence logic separate from business logic.
-
-
-__________
-
-
-
+Usually, no extra DAO class is needed with Spring Data JPA.
 
 Logging Levels
-
 Level	Use Case
-trace	Very detailed, usually for debugging deep issues
-debug	Debug info for developers
-info	General runtime info, like “server started”
-warn	Something unexpected but not fatal
-error	Something broke, must fix
-
-
-
-Logging:
-
-Logs go to console, and the default level is INFO.
-
-
+TRACE	Very detailed, for deep debugging
+DEBUG	Debug info for developers
+INFO	General runtime info, like “server started”
+WARN	Something unexpected but not fatal
+ERROR	Something broke, must fix
+Logging Example (SLF4J)
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -269,20 +181,12 @@ public class ProductService {
 
     public void addProduct(Product product) {
         logger.info("Adding product: {}", product.getName());
-        // your save logic
         logger.debug("Product details: {}", product);
     }
 }
 
 
-
-
-LOMBOK:
-
-
-@Slf4j automatically creates log variable for you.
-Works with info, debug, warn, error levels.
-
+Lombok shortcut with @Slf4j:
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -297,74 +201,38 @@ public class ProductService {
 }
 
 
-private static final Logger logger = LoggerFactory.getLogger(ProductService.class) - EXPLANATION
-
-
 LoggerFactory.getLogger(ProductService.class)
 
-LoggerFactory is from SLF4J — it creates a Logger instance.
+Creates logger for the class.
 
-getLogger(Class) tells the logger which class it belongs to.
+private static final → shared, constant, class-level.
 
-Why class? So logs can show which class the message came from, making it easier to debug.
-
-
-
-private static final
-
-private → Only this class can access the logger.
-
-static → Shared across all instances of the class (you don’t need a new logger per object).
-
-final → You don’t want to reassign the logger; it stays constant.
-
-
-Example output:
-2025-09-13 14:30:12 INFO ProductService: Adding product: Laptop
-2025-09-13 14:30:13 INFO ProductController: Fetching all products
-
-
-
-____________
-
-log4j2 proprties:
-
+Logging Configuration (log4j2 or Spring Boot)
 # Set global log level
 logging.level.root=INFO
 
 # Enable DEBUG logs globally
 logging.level.root=DEBUG
 
-
-_________________
-
-
-
-
-eg : entity and orm
-
-
+Example Entity with Annotations
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
 @Entity
-@Table(
-        name = "price",
-        schema = "service_prices"
-)
+@Table(name = "price", schema = "service_prices")
 public class Price {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence_price_generator")
     @GenericGenerator(
-            name = "sequence_price_generator",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "service_prices.price_id_seq"),
-                    @Parameter(name = "initial_value", value = "1000"),
-                    @Parameter(name = "increment_size", value = "1")
-            }
+        name = "sequence_price_generator",
+        strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+        parameters = {
+            @Parameter(name = "sequence_name", value = "service_prices.price_id_seq"),
+            @Parameter(name = "initial_value", value = "1000"),
+            @Parameter(name = "increment_size", value = "1")
+        }
     )
     private Long id;
 
