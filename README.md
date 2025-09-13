@@ -108,6 +108,48 @@ Annotations:
 @RestController → REST APIs.
 
 
+@Data
+
+Automatically generates:
+
+Getters for all fields
+Setters for all fields
+toString() method
+equals() and hashCode()
+
+Required constructor (no-args by default)
+
+
+
+@Builder
+
+Allows you to create objects in a readable way without using long constructors.
+
+Implements the builder pattern automatically.
+
+
+@Builder
+@Data
+public class Product {
+    private Long id;
+    private String name;
+    private Double price;
+}
+
+
+Now you can create a Product like this:
+
+Product p = Product.builder()
+                   .id(1L)
+                   .name("Laptop")
+                   .price(899.0)
+                   .build();
+
+
+
+
+_____
+
 @Autowired
 It’s Spring’s way of doing Dependency Injection (DI).
 Instead of you manually creating objects with new.
@@ -133,8 +175,7 @@ public class OrderService {
 }
 
 
-
-
+_____
 
 Spring automatically injects the required bean (class instance) wherever you need it
 
@@ -196,3 +237,100 @@ DAO = Data Access Object
 It’s a layer that handles all database operations (CRUD) for an entity.
 Keeps persistence logic separate from business logic.
 
+
+__________
+
+
+
+
+Logging Levels
+
+Level	Use Case
+trace	Very detailed, usually for debugging deep issues
+debug	Debug info for developers
+info	General runtime info, like “server started”
+warn	Something unexpected but not fatal
+error	Something broke, must fix
+
+
+
+Logging:
+
+Logs go to console, and the default level is INFO.
+
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+@Service
+public class ProductService {
+
+    private static final Logger logger = LoggerFactory.getLogger(ProductService.class);
+
+    public void addProduct(Product product) {
+        logger.info("Adding product: {}", product.getName());
+        // your save logic
+        logger.debug("Product details: {}", product);
+    }
+}
+
+
+
+
+LOMBOK:
+
+
+@Slf4j automatically creates log variable for you.
+Works with info, debug, warn, error levels.
+
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Service
+public class ProductService {
+
+    public void addProduct(Product product) {
+        log.info("Adding product: {}", product.getName());
+        log.debug("Product details: {}", product);
+    }
+}
+
+
+private static final Logger logger = LoggerFactory.getLogger(ProductService.class) - EXPLANATION
+
+
+LoggerFactory.getLogger(ProductService.class)
+
+LoggerFactory is from SLF4J — it creates a Logger instance.
+
+getLogger(Class) tells the logger which class it belongs to.
+
+Why class? So logs can show which class the message came from, making it easier to debug.
+
+
+
+private static final
+
+private → Only this class can access the logger.
+
+static → Shared across all instances of the class (you don’t need a new logger per object).
+
+final → You don’t want to reassign the logger; it stays constant.
+
+
+Example output:
+2025-09-13 14:30:12 INFO ProductService: Adding product: Laptop
+2025-09-13 14:30:13 INFO ProductController: Fetching all products
+
+
+
+____________
+
+log4j2 proprties:
+
+# Set global log level
+logging.level.root=INFO
+
+# Enable DEBUG logs globally
+logging.level.root=DEBUG
